@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>이미지 색상 조절</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px;
+      background: #1e1e1e;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 30px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .image-container {
+      width: 700px;
+      max-width: 90vw;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    img {
+      width: 100%;
+      display: block;
+
+      /* 기본 필터 값 */
+      filter:
+        hue-rotate(0deg)
+        brightness(100%)
+        saturate(100%);
+      
+      transition: filter 0.1s;
+    }
+
+    .controls {
+      width: 700px;
+      max-width: 90vw;
+      background: #2b2b2b;
+      padding: 24px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      cursor: pointer;
+    }
+
+    .reset-btn {
+      margin-top: 10px;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: #4f8cff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .reset-btn:hover {
+      background: #3a73dd;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>이미지 색상 조절기</h1>
+
+  <div class="image-container">
+    <!-- 원하는 이미지로 변경 -->
+    <img
+      id="targetImage"
+      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+      alt="샘플 이미지"
+    />
+  </div>
+
+  <div class="controls">
+
+    <!-- 색상 -->
+    <div class="control-group">
+      <div class="label-row">
+        <span>색상(Hue)</span>
+        <span id="hueValue">0°</span>
+      </div>
+
+      <input
+        type="range"
+        id="hue"
+        min="0"
+        max="360"
+        value="0"
+      />
+    </div>
+
+    <!-- 명도 -->
+    <div class="control-group">
+      <div class="label-row">
+        <span>명도(Brightness)</span>
+        <span id="brightnessValue">100%</span>
+      </div>
+
+      <input
+        type="range"
+        id="brightness"
+        min="0"
+        max="200"
+        value="100"
+      />
+    </div>
+
+    <!-- 채도 -->
+    <div class="control-group">
+      <div class="label-row">
+        <span>채도(Saturation)</span>
+        <span id="saturationValue">100%</span>
+      </div>
+
+      <input
+        type="range"
+        id="saturation"
+        min="0"
+        max="300"
+        value="100"
+      />
+    </div>
+
+    <button class="reset-btn" id="resetBtn">
+      초기화
+    </button>
+
+  </div>
+
+  <script>
+    const image = document.getElementById("targetImage");
+
+    const hue = document.getElementById("hue");
+    const brightness = document.getElementById("brightness");
+    const saturation = document.getElementById("saturation");
+
+    const hueValue = document.getElementById("hueValue");
+    const brightnessValue = document.getElementById("brightnessValue");
+    const saturationValue = document.getElementById("saturationValue");
+
+    const resetBtn = document.getElementById("resetBtn");
+
+    function updateFilter() {
+      const hueDeg = hue.value;
+      const brightnessPercent = brightness.value;
+      const saturationPercent = saturation.value;
+
+      image.style.filter = `
+        hue-rotate(${hueDeg}deg)
+        brightness(${brightnessPercent}%)
+        saturate(${saturationPercent}%)
+      `;
+
+      hueValue.textContent = `${hueDeg}°`;
+      brightnessValue.textContent = `${brightnessPercent}%`;
+      saturationValue.textContent = `${saturationPercent}%`;
+    }
+
+    hue.addEventListener("input", updateFilter);
+    brightness.addEventListener("input", updateFilter);
+    saturation.addEventListener("input", updateFilter);
+
+    resetBtn.addEventListener("click", () => {
+      hue.value = 0;
+      brightness.value = 100;
+      saturation.value = 100;
+
+      updateFilter();
+    });
+
+    updateFilter();
+  </script>
+
+</body>
+</html>
