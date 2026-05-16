@@ -1,209 +1,284 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>이미지 색상 조절</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>길드명찰 색상 시뮬</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <style>
+      * {
+        box-sizing: border-box;
+      }
 
-    body {
-      margin: 0;
-      padding: 40px;
-      background: #1e1e1e;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 30px;
-    }
+      body {
+        margin: 0;
+        padding: 40px;
+        background: #1e1e1e;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
 
-    h1 {
-      margin: 0;
-    }
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-    .image-container {
-      width: 700px;
-      max-width: 90vw;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
+      .top-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
 
-    img {
-      width: 100%;
-      display: block;
+      .select-btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #444;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 15px;
+      }
 
-      /* 기본 필터 값 */
-      filter:
-        hue-rotate(0deg)
-        brightness(100%)
-        saturate(100%);
+      .select-btn.active {
+        background: #4f8cff;
+      }
+
+      .image-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+      }
+
+      .image-box {
+        position: relative;
+        width: 380px;
+        background: #2b2b2b;
+        border-radius: 16px;
+        overflow: hidden;
+        padding: 12px;
+        text-align: center;
+      }
+
+      .image-box h3 {
+        text-align: center;
+        margin-top: 0;
+      }
+
+      .controls {
+        width: 700px;
+        max-width: 95vw;
+        margin: auto;
+        background: #2b2b2b;
+        padding: 24px;
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .label-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+      }
+
+      .text {
+        display: flex;
+        position: absolute;
+        top: 262px;
+        left: 161px;
+      }
+
+      .frame {
+        display: flex;
+        position: absolute;
+        top: 256px;
+        left: 157px;
+      }
+
+      .bg {
+        display: flex;
+        position: absolute;
+        top: 256px;
+        left: 157px;
+        opacity: 0.6;
+      }
+
       
-      transition: filter 0.1s;
-    }
 
-    .controls {
-      width: 700px;
-      max-width: 90vw;
-      background: #2b2b2b;
-      padding: 24px;
-      border-radius: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+      input[type="range"] {
+        width: 100%;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>길드명찰 색상 시뮬</h1>
 
-    .control-group {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
+    <!-- 어떤 사진을 조절할지 선택 -->
+    <div class="top-buttons">
+      <button class="select-btn active" data-target="img1">배경</button>
 
-    .label-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 14px;
-    }
+      <button class="select-btn" data-target="img2">글자</button>
 
-    input[type="range"] {
-      width: 100%;
-      cursor: pointer;
-    }
-
-    .reset-btn {
-      margin-top: 10px;
-      padding: 12px;
-      border: none;
-      border-radius: 10px;
-      background: #4f8cff;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .reset-btn:hover {
-      background: #3a73dd;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>이미지 색상 조절기</h1>
-
-  <div class="image-container">
-    <!-- 원하는 이미지로 변경 -->
-    <img
-      id="targetImage"
-      src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
-      alt="샘플 이미지"
-    />
-  </div>
-
-  <div class="controls">
-
-    <!-- 색상 -->
-    <div class="control-group">
-      <div class="label-row">
-        <span>색상(Hue)</span>
-        <span id="hueValue">0°</span>
-      </div>
-
-      <input
-        type="range"
-        id="hue"
-        min="0"
-        max="360"
-        value="0"
-      />
+      <button class="select-btn" data-target="img3">테두리</button>
     </div>
 
-    <!-- 명도 -->
-    <div class="control-group">
-      <div class="label-row">
-        <span>명도(Brightness)</span>
-        <span id="brightnessValue">100%</span>
+    <!-- 이미지 -->
+    <div class="image-wrapper">
+      <div class="image-box">
+        <img id="img0" src="./img/char.png" />
+        <img id="img1" src="./img/bg.png" class="bg" />
+        <img id="img2" src="img/text.png" class="text" />
+        <img id="img3" src="img/frame.png" class="frame" />
       </div>
-
-      <input
-        type="range"
-        id="brightness"
-        min="0"
-        max="200"
-        value="100"
-      />
     </div>
 
-    <!-- 채도 -->
-    <div class="control-group">
-      <div class="label-row">
-        <span>채도(Saturation)</span>
-        <span id="saturationValue">100%</span>
+    <!-- 슬라이더 -->
+    <div class="controls">
+      <!-- 색상 -->
+      <div class="control-group">
+        <div class="label-row">
+          <span>색상</span>
+          <span id="hueValue">0°</span>
+        </div>
+
+        <input type="range" id="hue" min="0" max="360" value="0" />
       </div>
 
-      <input
-        type="range"
-        id="saturation"
-        min="0"
-        max="300"
-        value="100"
-      />
+      <!-- 채도 -->
+      <div class="control-group">
+        <div class="label-row">
+          <span>채도</span>
+          <span id="saturationValue">100%</span>
+        </div>
+
+        <input type="range" id="saturation" min="0" max="300" value="100" />
+      </div>
+
+      <!-- 밝기 -->
+      <div class="control-group">
+        <div class="label-row">
+          <span>밝기</span>
+          <span id="brightnessValue">100%</span>
+        </div>
+
+        <input type="range" id="brightness" min="0" max="300" value="100" />
+      </div>
     </div>
 
-    <button class="reset-btn" id="resetBtn">
-      초기화
-    </button>
+    <script>
+      // 이미지 상태 저장
+      const imageSettings = {
+        img1: {
+          hue: 0,
+          brightness: 100,
+          saturation: 100,
+        },
+        img2: {
+          hue: 0,
+          brightness: 100,
+          saturation: 100,
+        },
+        img3: {
+          hue: 0,
+          brightness: 100,
+          saturation: 100,
+        },
+      };
 
-  </div>
+      // 현재 선택된 이미지
+      let currentImageId = "img1";
 
-  <script>
-    const image = document.getElementById("targetImage");
+      // 요소 가져오기
+      const hue = document.getElementById("hue");
+      const brightness = document.getElementById("brightness");
+      const saturation = document.getElementById("saturation");
 
-    const hue = document.getElementById("hue");
-    const brightness = document.getElementById("brightness");
-    const saturation = document.getElementById("saturation");
+      const hueValue = document.getElementById("hueValue");
+      const brightnessValue = document.getElementById("brightnessValue");
+      const saturationValue = document.getElementById("saturationValue");
 
-    const hueValue = document.getElementById("hueValue");
-    const brightnessValue = document.getElementById("brightnessValue");
-    const saturationValue = document.getElementById("saturationValue");
+      const buttons = document.querySelectorAll(".select-btn");
 
-    const resetBtn = document.getElementById("resetBtn");
+      // 필터 적용
+      function applyFilter(imageId) {
+        const img = document.getElementById(imageId);
+        const setting = imageSettings[imageId];
 
-    function updateFilter() {
-      const hueDeg = hue.value;
-      const brightnessPercent = brightness.value;
-      const saturationPercent = saturation.value;
-
-      image.style.filter = `
-        hue-rotate(${hueDeg}deg)
-        brightness(${brightnessPercent}%)
-        saturate(${saturationPercent}%)
+        img.style.filter = `
+        hue-rotate(${setting.hue}deg)
+        brightness(${setting.brightness}%)
+        contrast(${setting.brightness}%)
+        saturate(${setting.saturation}%)
       `;
+      }
 
-      hueValue.textContent = `${hueDeg}°`;
-      brightnessValue.textContent = `${brightnessPercent}%`;
-      saturationValue.textContent = `${saturationPercent}%`;
-    }
+      // 슬라이더 UI 갱신
+      function updateSliderUI() {
+        const setting = imageSettings[currentImageId];
 
-    hue.addEventListener("input", updateFilter);
-    brightness.addEventListener("input", updateFilter);
-    saturation.addEventListener("input", updateFilter);
+        hue.value = setting.hue;
+        brightness.value = setting.brightness;
+        saturation.value = setting.saturation;
 
-    resetBtn.addEventListener("click", () => {
-      hue.value = 0;
-      brightness.value = 100;
-      saturation.value = 100;
+        hueValue.textContent = `${setting.hue}°`;
+        brightnessValue.textContent = `${setting.brightness}%`;
+        saturationValue.textContent = `${setting.saturation}%`;
+      }
 
-      updateFilter();
-    });
+      // 슬라이더 변경 시
+      function onSliderChange() {
+        imageSettings[currentImageId] = {
+          hue: hue.value,
+          brightness: brightness.value,
+          saturation: saturation.value,
+        };
 
-    updateFilter();
-  </script>
+        updateSliderUI();
+        applyFilter(currentImageId);
+      }
 
-</body>
+      // 버튼 클릭
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // 버튼 active 변경
+          buttons.forEach((btn) => {
+            btn.classList.remove("active");
+          });
+
+          button.classList.add("active");
+
+          // 현재 이미지 변경
+          currentImageId = button.dataset.target;
+
+          // 슬라이더 값 갱신
+          updateSliderUI();
+        });
+      });
+
+      // 슬라이더 이벤트
+      hue.addEventListener("input", onSliderChange);
+      brightness.addEventListener("input", onSliderChange);
+      saturation.addEventListener("input", onSliderChange);
+
+      // 초기 적용
+      applyFilter("img1");
+      applyFilter("img2");
+      applyFilter("img3");
+
+      updateSliderUI();
+    </script>
+  </body>
 </html>
