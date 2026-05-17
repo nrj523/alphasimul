@@ -42,15 +42,37 @@
         font-size: 15px;
       }
 
+      .select-btn2 {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #444;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 15px;
+      }
+
+      .zoom-btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #444;
+        color: white;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 15px;
+      }
+
       .select-btn.active {
         background: #4f8cff;
       }
 
       .image-wrapper {
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
         gap: 20px;
-        flex-wrap: wrap;
         margin-bottom: 40px;
       }
 
@@ -64,13 +86,20 @@
         text-align: center;
       }
 
+      .control-box {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
       .image-box h3 {
         text-align: center;
         margin-top: 0;
       }
 
       .controls {
-        width: 700px;
+        width: 400px;
         max-width: 95vw;
         margin: auto;
         background: #2b2b2b;
@@ -93,192 +122,424 @@
         font-size: 14px;
       }
 
-      .text {
+      .layer {
         display: flex;
         position: absolute;
-        top: 262px;
-        left: 161px;
+        top: 0;
+        left: 0;
+        transform: translateX(169px) translateY(196px);
+        transform-origin: center;
       }
 
-      .frame {
-        display: flex;
-        position: absolute;
-        top: 256px;
-        left: 157px;
+      .image-box img,
+      .layer {
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        -ms-interpolation-mode: nearest-neighbor;
       }
 
       .bg {
-        display: flex;
-        position: absolute;
-        top: 256px;
-        left: 157px;
         opacity: 0.6;
       }
 
-      
+      .frame {
+        opacity: 0.6;
+      }
 
-      input[type="range"] {
+      #hue {
+        -webkit-appearance: none;
+        appearance: none;
         width: 100%;
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(
+          90deg,
+          red 0,
+          #ff0 17%,
+          lime 33%,
+          cyan 50%,
+          blue 66%,
+          #f0f 83%,
+          red
+        );
+        outline: none;
+        margin: 6px 0;
+      }
+      #saturation {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(90deg, #959595 0, red);
+        outline: none;
+        margin: 6px 0;
+      }
+      #brightness {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(90deg, black 0, white);
+        outline: none;
+        margin: 6px 0;
+      }
+
+      #hue::-webkit-slider-thumb,
+      #saturation::-webkit-slider-thumb,
+      #brightness::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #666;
+        margin-top: -8px;
         cursor: pointer;
+      }
+      #hue::-webkit-slider-runnable-track,
+      #saturation::-webkit-slider-runnable-track,
+      #brightness::-webkit-slider-runnable-track {
+        height: 8px;
+        border-radius: 8px;
+      }
+
+      /* Firefox */
+      #hue::-moz-range-track,
+      #saturation::-moz-range-track,
+      #brightness::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(
+          90deg,
+          red 0,
+          #ff0 17%,
+          lime 33%,
+          cyan 50%,
+          blue 66%,
+          #f0f 83%,
+          red
+        );
+      }
+      #saturation::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(90deg, #959595 0, red);
+      }
+      #brightness::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(90deg, black 0, white);
+      }
+      #hue::-moz-range-thumb,
+      #saturation::-moz-range-thumb,
+      #brightness::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #666;
+        cursor: pointer;
+      }
+
+      /* IE/Edge */
+      #hue::-ms-track,
+      #saturation::-ms-track,
+      #brightness::-ms-track {
+        width: 100%;
+        height: 8px;
+        background: transparent;
+        color: transparent;
+      }
+      #hue::-ms-fill-lower,
+      #hue::-ms-fill-upper {
+        background-image: linear-gradient(
+          90deg,
+          red 0,
+          #ff0 17%,
+          lime 33%,
+          cyan 50%,
+          blue 66%,
+          #f0f 83%,
+          red
+        );
+        border-radius: 8px;
+      }
+      #saturation::-ms-fill-lower,
+      #saturation::-ms-fill-upper {
+        background-image: linear-gradient(90deg, #959595 0, red);
+        border-radius: 8px;
+      }
+      #brightness::-ms-fill-lower,
+      #brightness::-ms-fill-upper {
+        background-image: linear-gradient(90deg, black 0, white);
+        border-radius: 8px;
       }
     </style>
   </head>
   <body>
     <h1>길드명찰 색상 시뮬</h1>
 
+    <!-- 이미지 -->
+    <div class="image-wrapper">
+      <div class="image-box">
+        <img id="toggleImage" src="./img/char_white.png" />
+        <img id="img1" src="./img/bg.png" class="layer bg" />
+        <img id="img2" src="img/text.png" class="layer text" />
+        <img id="img3" src="img/frame.png" class="layer frame" />
+      </div>
+      <div class="control-box">
+        <button id="zoomToggleBtn" class="zoom-btn">2배 확대</button>
+        <button id="otherPictureBtn" class="select-btn2">예시 사진 보기</button>
+        <button id="resetSettingsBtn" class="select-btn2">설정 초기화</button>
+      </div>
+    </div>
+
     <!-- 어떤 사진을 조절할지 선택 -->
     <div class="top-buttons">
       <button class="select-btn active" data-target="img1">배경</button>
 
-      <button class="select-btn" data-target="img2">글자</button>
+      <button class="select-btn" data-target="img2">폰트</button>
 
       <button class="select-btn" data-target="img3">테두리</button>
     </div>
 
-    <!-- 이미지 -->
-    <div class="image-wrapper">
-      <div class="image-box">
-        <img id="img0" src="./img/char.png" />
-        <img id="img1" src="./img/bg.png" class="bg" />
-        <img id="img2" src="img/text.png" class="text" />
-        <img id="img3" src="img/frame.png" class="frame" />
-      </div>
-    </div>
-
     <!-- 슬라이더 -->
     <div class="controls">
-      <!-- 색상 -->
       <div class="control-group">
         <div class="label-row">
           <span>색상</span>
-          <span id="hueValue">0°</span>
+          <span id="hueValue">0</span>
         </div>
-
-        <input type="range" id="hue" min="0" max="360" value="0" />
+        <input type="range" id="hue" min="0" max="359" value="0" />
       </div>
-
-      <!-- 채도 -->
       <div class="control-group">
         <div class="label-row">
           <span>채도</span>
-          <span id="saturationValue">100%</span>
+          <span id="saturationValue">0</span>
         </div>
-
-        <input type="range" id="saturation" min="0" max="300" value="100" />
+        <input type="range" id="saturation" min="0" max="198" value="99" />
       </div>
-
-      <!-- 밝기 -->
       <div class="control-group">
         <div class="label-row">
-          <span>밝기</span>
-          <span id="brightnessValue">100%</span>
+          <span>명도</span>
+          <span id="brightnessValue">0</span>
         </div>
-
-        <input type="range" id="brightness" min="0" max="300" value="100" />
+        <input type="range" id="brightness" min="0" max="198" value="99" />
       </div>
     </div>
 
+    <!--------------- 스크립트 --------------->
+
     <script>
-      // 이미지 상태 저장
-      const imageSettings = {
-        img1: {
-          hue: 0,
-          brightness: 100,
-          saturation: 100,
-        },
-        img2: {
-          hue: 0,
-          brightness: 100,
-          saturation: 100,
-        },
-        img3: {
-          hue: 0,
-          brightness: 100,
-          saturation: 100,
-        },
-      };
-
-      // 현재 선택된 이미지
-      let currentImageId = "img1";
-
-      // 요소 가져오기
-      const hue = document.getElementById("hue");
-      const brightness = document.getElementById("brightness");
-      const saturation = document.getElementById("saturation");
-
+      const images = ["./img/char_white.png", "./img/char.png"];
+      const imagesBtn = ["예시 사진 보기", "흰 배경으로 보기"];
+      const imageBoxImage = document.querySelectorAll(".layer");
+      const layerButtons = document.querySelectorAll(
+        ".top-buttons .select-btn",
+      );
+      const hueInput = document.getElementById("hue");
+      const brightnessInput = document.getElementById("brightness");
+      const saturationInput = document.getElementById("saturation");
       const hueValue = document.getElementById("hueValue");
       const brightnessValue = document.getElementById("brightnessValue");
       const saturationValue = document.getElementById("saturationValue");
+      const otherPictureBtn = document.getElementById("otherPictureBtn");
+      const toggleImage = document.getElementById("toggleImage");
+      const resetSettingsBtn = document.getElementById("resetSettingsBtn");
 
-      const buttons = document.querySelectorAll(".select-btn");
+      const STORAGE_KEY = "alphasimul_layer_settings_v1";
+      const DEFAULT_LAYER_SETTINGS = {
+        img1: { name: "배경", hue: 0, brightness: 0, saturation: 0 },
+        img2: { name: "폰트", hue: 0, brightness: 199, saturation: 0 },
+        img3: { name: "테두리", hue: 0, brightness: 0, saturation: 0 },
+      };
+      /* --------------------------------- */
 
-      // 필터 적용
-      function applyFilter(imageId) {
-        const img = document.getElementById(imageId);
-        const setting = imageSettings[imageId];
+      function applyLayerStyle(layerId) {
+        const img = document.getElementById(layerId);
+        const settings = layerSettings[layerId];
 
+        const h = settings.hue;
+        const s = settings.saturation;
+        const l = settings.brightness;
         img.style.filter = `
-        hue-rotate(${setting.hue}deg)
-        brightness(${setting.brightness}%)
-        contrast(${setting.brightness}%)
-        saturate(${setting.saturation}%)
-      `;
+        saturate(${s }%)
+        hue-rotate(${h}deg)
+        brightness(${l * 5}%)
+        `;
       }
 
-      // 슬라이더 UI 갱신
-      function updateSliderUI() {
-        const setting = imageSettings[currentImageId];
+      /* --------------------------------- */
 
-        hue.value = setting.hue;
-        brightness.value = setting.brightness;
-        saturation.value = setting.saturation;
-
-        hueValue.textContent = `${setting.hue}°`;
-        brightnessValue.textContent = `${setting.brightness}%`;
-        saturationValue.textContent = `${setting.saturation}%`;
+      function resetToDefaults() {
+        // remove stored settings
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch (e) {}
+        // restore defaults into layerSettings
+        Object.keys(DEFAULT_LAYER_SETTINGS).forEach((k) => {
+          if (layerSettings[k])
+            Object.assign(layerSettings[k], DEFAULT_LAYER_SETTINGS[k]);
+        });
+        // reapply styles and UI
+        imageBoxImage.forEach((img) => {
+          if (layerSettings[img.id]) applyLayerStyle(img.id);
+          // if image was programmatically recolored, restore original
+          try {
+            const original =
+              img.getAttribute && img.getAttribute("data-original-src");
+            if (original) {
+              img.src = original;
+              img.removeAttribute("data-original-src");
+            }
+          } catch (e) {}
+        });
+        updateSliderValues(selectedLayerId);
       }
 
-      // 슬라이더 변경 시
-      function onSliderChange() {
-        imageSettings[currentImageId] = {
-          hue: hue.value,
-          brightness: brightness.value,
-          saturation: saturation.value,
-        };
-
-        updateSliderUI();
-        applyFilter(currentImageId);
+      if (resetSettingsBtn) {
+        resetSettingsBtn.addEventListener("click", () => {
+          if (confirm("레이어 설정을 초기화하시겠습니까?")) {
+            resetToDefaults();
+          }
+        });
       }
 
-      // 버튼 클릭
-      buttons.forEach((button) => {
-        button.addEventListener("click", () => {
-          // 버튼 active 변경
-          buttons.forEach((btn) => {
-            btn.classList.remove("active");
+      /* --------------------------------- */
+      const layerSettings = {
+        img1: { name: "배경", hue: 0, brightness: 0, saturation: 0 },
+        img2: { name: "폰트", hue: 0, brightness: 199, saturation: 0 },
+        img3: { name: "테두리", hue: 0, brightness: 0, saturation: 0 },
+      };
+
+      function saveLayerSettings() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(layerSettings));
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      function loadLayerSettings() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          Object.keys(layerSettings).forEach((k) => {
+            if (parsed[k]) Object.assign(layerSettings[k], parsed[k]);
           });
+        } catch (e) {
+          // ignore
+        }
+      }
 
-          button.classList.add("active");
+      loadLayerSettings();
 
-          // 현재 이미지 변경
-          currentImageId = button.dataset.target;
+      let currentIndex = 0;
+      let selectedLayerId = "img1";
 
-          // 슬라이더 값 갱신
-          updateSliderUI();
+      otherPictureBtn.addEventListener("click", () => {
+        currentIndex = (currentIndex + 1) % images.length;
+
+        toggleImage.src = images[currentIndex];
+        otherPictureBtn.textContent = imagesBtn[currentIndex];
+      });
+
+      /* --------------------------------- */
+
+      const zoomToggleBtn = document.getElementById("zoomToggleBtn");
+
+      let isZoomed = 0;
+      const zoomedOptions = [
+        { scale: 1, translateX: 169, translateY: 196 },
+        { scale: 2, translateX: 168, translateY: 209 },
+        { scale: 4, translateX: 167, translateY: 216 },
+      ];
+      const sourceZoomedOptions = [
+        { scale: 1, translateX: 0, translateY: 0 },
+        { scale: 2, translateX: 0, translateY: -60 },
+        { scale: 4, translateX: 0, translateY: -200 },
+      ];
+      const zoomedText = ["2배 확대", "4배 확대", "원래 크기"];
+      zoomToggleBtn.addEventListener("click", () => {
+        isZoomed = (isZoomed + 1) % 3;
+
+        imageBoxImage.forEach((img) => {
+          toggleImage.style.transform = `translateX(${sourceZoomedOptions[isZoomed].translateX}px)
+            translateY(${sourceZoomedOptions[isZoomed].translateY}px)
+             scale(${sourceZoomedOptions[isZoomed].scale})`;
+          img.style.transform = `translateX(${zoomedOptions[isZoomed].translateX}px)
+            translateY(${zoomedOptions[isZoomed].translateY}px)
+             scale(${zoomedOptions[isZoomed].scale})`;
+        });
+
+        zoomToggleBtn.textContent = zoomedText[isZoomed];
+      });
+
+      /* --------------------------------- */
+
+      function updateSliderValues(layerId) {
+        const settings = layerSettings[layerId];
+        if (!settings) return;
+
+        hueInput.value = settings.hue;
+        brightnessInput.value = settings.brightness;
+        saturationInput.value = settings.saturation;
+        hueValue.textContent = `${settings.hue}`;
+        brightnessValue.textContent = `${settings.brightness - 99}`;
+        saturationValue.textContent = `${settings.saturation - 99}`;
+      }
+
+      function setActiveLayerButton(layerId) {
+        layerButtons.forEach((button) => {
+          button.classList.toggle("active", button.dataset.target === layerId);
+        });
+      }
+
+      layerButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedLayerId = button.dataset.target;
+          setActiveLayerButton(selectedLayerId);
+          updateSliderValues(selectedLayerId);
         });
       });
 
-      // 슬라이더 이벤트
-      hue.addEventListener("input", onSliderChange);
-      brightness.addEventListener("input", onSliderChange);
-      saturation.addEventListener("input", onSliderChange);
+      function syncLayerSetting(key, value) {
+        if (!layerSettings[selectedLayerId]) return;
+        layerSettings[selectedLayerId][key] = value;
+        applyLayerStyle(selectedLayerId);
+        saveLayerSettings();
+      }
 
-      // 초기 적용
-      applyFilter("img1");
-      applyFilter("img2");
-      applyFilter("img3");
+      hueInput.addEventListener("input", () => {
+        const value = Number(hueInput.value);
+        hueValue.textContent = `${value}`;
+        syncLayerSetting("hue", value);
+      });
 
-      updateSliderUI();
+      brightnessInput.addEventListener("input", () => {
+        const value = Number(brightnessInput.value);
+        brightnessValue.textContent = `${value - 99}`;
+        syncLayerSetting("brightness", value);
+      });
+
+      saturationInput.addEventListener("input", () => {
+        const value = Number(saturationInput.value);
+        saturationValue.textContent = `${value - 99}`;
+        syncLayerSetting("saturation", value);
+      });
+
+      imageBoxImage.forEach((img) => {
+        const id = img.id;
+        if (layerSettings[id]) {
+          applyLayerStyle(id);
+        }
+      });
+
+      setActiveLayerButton(selectedLayerId);
+      updateSliderValues(selectedLayerId);
     </script>
   </body>
 </html>
