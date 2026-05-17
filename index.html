@@ -150,13 +150,15 @@
       .layer-white {
         opacity: 0;
         z-index: 2;
+        mix-blend-mode: screen;
+        pointer-events: none;
       }
 
-      .bg {
+      .bg-wrapper {
         opacity: 0.6;
       }
 
-      .frame {
+      .frame-wrapper {
         opacity: 0.6;
       }
 
@@ -219,7 +221,6 @@
         border-radius: 8px;
       }
 
-      /* Firefox */
       #hue::-moz-range-track,
       #saturation::-moz-range-track,
       #brightness::-moz-range-track {
@@ -257,7 +258,6 @@
         cursor: pointer;
       }
 
-      /* IE/Edge */
       #hue::-ms-track,
       #saturation::-ms-track,
       #brightness::-ms-track {
@@ -295,17 +295,18 @@
   <body>
     <h1>길드명찰 색상 시뮬</h1>
 
-    <!-- 이미지 -->
     <div class="image-wrapper">
       <div class="image-box">
         <img id="toggleImage" src="./img/char_white.png" />
-        <div class="layer-wrapper">
-          <img
-            id="img1-white"
-            src="./img/bg_white.png"
-            class="layer layer-white"
-          />
-          <img id="img1" src="./img/bg.png" class="bg layer" />
+        <div class="layer-wrapper bg-wrapper">
+          <div class="blend-layer">
+            <img id="img1" src="./img/bg.png" class="layer" />
+            <img
+              id="img1-white"
+              src="./img/bg_white.png"
+              class="layer layer-white"
+            />
+          </div>
         </div>
         <div class="layer-wrapper">
           <img
@@ -315,14 +316,15 @@
           />
           <img id="img2" src="img/text.png" class="text layer" />
         </div>
-
-        <div class="layer-wrapper">
-          <img
-            id="img3-white"
-            src="img/frame_white.png"
-            class="layer layer-white"
-          />
-          <img id="img3" src="img/frame.png" class="frame layer" />
+        <div class="layer-wrapper frame-wrapper">
+          <div class="blend-layer">
+            <img id="img3" src="img/frame.png" class="frame layer" />
+            <img
+              id="img3-white"
+              src="img/frame_white.png"
+              class="layer layer-white"
+            />
+          </div>
         </div>
       </div>
       <div class="control-box">
@@ -332,7 +334,6 @@
       </div>
     </div>
 
-    <!-- 어떤 사진을 조절할지 선택 -->
     <div class="top-buttons">
       <button class="select-btn active" data-target="img1">배경</button>
 
@@ -341,7 +342,6 @@
       <button class="select-btn" data-target="img3">테두리</button>
     </div>
 
-    <!-- 슬라이더 -->
     <div class="controls">
       <div class="control-group">
         <div class="label-row">
@@ -365,8 +365,6 @@
         <input type="range" id="brightness" min="-99" max="99" value="0" />
       </div>
     </div>
-
-    <!--------------- 스크립트 --------------->
 
     <script>
       const images = ["./img/char_white.png", "./img/char.png"];
@@ -400,30 +398,20 @@
         const s = settings.saturation;
         const b = settings.brightness;
 
-        // 일반 레이어
         const normalLayer = document.getElementById(layerId);
-
-        // white 레이어
         const whiteLayer = document.getElementById(`${layerId}-white`);
 
         let brightnessPercent = 100;
         let whiteOpacity = 0;
 
-        // -99 ~ 0
-        // 일반 레이어 brightness 감소
         if (b <= 0) {
           brightnessPercent = ((b + 99) / 99) * 100;
           whiteOpacity = 0;
-        }
-
-        // 1 ~ 99
-        // white 레이어 opacity 증가
-        else {
+        } else {
           brightnessPercent = 100;
           whiteOpacity = b / 99;
         }
 
-        // 일반 레이어 스타일 적용
         if (normalLayer) {
           normalLayer.style.filter = `
       saturate(${100 + s}%)
@@ -432,7 +420,6 @@
     `;
         }
 
-        // white 레이어 스타일 적용
         if (whiteLayer) {
           whiteLayer.style.filter = `
       saturate(${100 + s}%)
@@ -440,25 +427,21 @@
       brightness(100%)
     `;
 
-          whiteLayer.style.opacity = whiteOpacity;
+          whiteLayer.style.opacity = whiteOpacity * 0.8;
         }
       }
       /* --------------------------------- */
 
       function resetToDefaults() {
-        // remove stored settings
         try {
           localStorage.removeItem(STORAGE_KEY);
         } catch (e) {}
-        // restore defaults into layerSettings
         Object.keys(DEFAULT_LAYER_SETTINGS).forEach((k) => {
           if (layerSettings[k])
             Object.assign(layerSettings[k], DEFAULT_LAYER_SETTINGS[k]);
         });
-        // reapply styles and UI
         imageBoxImage.forEach((img) => {
           if (layerSettings[img.id]) applyLayerStyle(img.id);
-          // if image was programmatically recolored, restore original
           try {
             const original =
               img.getAttribute && img.getAttribute("data-original-src");
@@ -489,9 +472,7 @@
       function saveLayerSettings() {
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(layerSettings));
-        } catch (e) {
-          // ignore
-        }
+        } catch (e) {}
       }
 
       function loadLayerSettings() {
@@ -502,9 +483,7 @@
           Object.keys(layerSettings).forEach((k) => {
             if (parsed[k]) Object.assign(layerSettings[k], parsed[k]);
           });
-        } catch (e) {
-          // ignore
-        }
+        } catch (e) {}
       }
 
       loadLayerSettings();
