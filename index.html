@@ -571,7 +571,10 @@
       function loadLayerSettings() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return;
+          if (!raw) {
+            resetToDefaults();
+            return;
+          }
           const parsed = JSON.parse(raw);
           Object.keys(layerSettings).forEach((k) => {
             if (parsed[k]) Object.assign(layerSettings[k], parsed[k]);
