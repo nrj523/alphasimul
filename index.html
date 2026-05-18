@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>길드명찰 색상 시뮬</title>
+    <title>알파 길드명찰 색상 시뮬</title>
 
     <style>
       * {
@@ -182,11 +182,6 @@
         flex-wrap: wrap;
       }
 
-      .image-box h3 {
-        text-align: center;
-        margin-top: 0;
-      }
-
       .controls {
         width: 400px;
         max-width: 95vw;
@@ -211,19 +206,8 @@
         font-size: 14px;
       }
 
-      /* .layer-wrapper {
-        display: relative;
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translateX(169px) translateY(196px);
-        transform-origin: center;
-      } */
-
       .image-box img {
         image-rendering: pixelated;
-        image-rendering: crisp-edges;
-        -ms-interpolation-mode: nearest-neighbor;
       }
 
       .layer {
@@ -294,23 +278,6 @@
         margin: 6px 0;
       }
 
-      .value-control {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-
-      .value-control input {
-        width: 40px;
-        padding: 4px 6px;
-        border-radius: 6px;
-        border: none;
-        background: #444;
-        color: white;
-        text-align: center;
-        font-size: 14px;
-      }
-
       .slider-row {
         display: flex;
         align-items: center;
@@ -370,7 +337,7 @@
     </style>
   </head>
   <body>
-    <h1>길드명찰 색상 시뮬</h1>
+    <h1>알파 길드명찰 색상 시뮬</h1>
 
     <div class="image-wrapper">
       <div class="image-box">
@@ -395,6 +362,7 @@
     </div>
 
     <div class="controls">
+      <label>※인게임과 값이 다름</label>
       <div class="control-group">
         <div class="label-row">
           <span>색상</span>
@@ -467,7 +435,6 @@
 
     <script>
       const images = ["./img/char_white.png", "./img/char_other.png"];
-      const imagesBtn = ["예시 사진 보기", "흰 배경으로 보기"];
       const imageBoxImage = document.querySelectorAll(".layer");
       const layerButtons = document.querySelectorAll(
         ".top-buttons .select-btn",
@@ -505,11 +472,14 @@
 
         const h = settings.hue;
 
-        // -99 ~ 99
         const s = ((settings.saturation + 99) / 198) * 100;
 
-        // -99 ~ 99
-        const l = ((settings.brightness + 99) / 198) * 100;
+        let l = (settings.brightness + 99) / 198;
+        if (layerId === "img2") {
+          l = l * 100;
+        } else {
+          l = l * 60;
+        }
 
         layer.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
       }
@@ -525,14 +495,6 @@
         });
         imageBoxImage.forEach((img) => {
           if (layerSettings[img.id]) applyLayerStyle(img.id);
-          try {
-            const original =
-              img.getAttribute && img.getAttribute("data-original-src");
-            if (original) {
-              img.src = original;
-              img.removeAttribute("data-original-src");
-            }
-          } catch (e) {}
         });
         updateSliderValues(selectedLayerId);
         saveLayerSettings();
@@ -609,7 +571,6 @@
       function loadLayerSettings() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          console.log(STORAGE_KEY);
           if (!raw) return;
           const parsed = JSON.parse(raw);
           Object.keys(layerSettings).forEach((k) => {
@@ -620,15 +581,20 @@
 
       loadLayerSettings();
 
-      let currentIndex = 0;
+      let isOtherImage = false;
 
       /* --------------------------------- */
 
       otherPictureBtn.addEventListener("click", () => {
-        currentIndex = (currentIndex + 1) % images.length;
+        isOtherImage = !isOtherImage;
 
-        toggleImage.src = images[currentIndex];
-        otherPictureBtn.textContent = imagesBtn[currentIndex];
+        toggleImage.src = isOtherImage
+          ? "./img/char_other.png"
+          : "./img/char_white.png";
+
+        otherPictureBtn.textContent = isOtherImage
+          ? "흰 배경으로 보기"
+          : "예시 사진 보기";
       });
 
       /* --------------------------------- */
