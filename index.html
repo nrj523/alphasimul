@@ -18,6 +18,95 @@
         font-family: Arial, sans-serif;
       }
 
+      #hue::-webkit-slider-thumb,
+      #saturation::-webkit-slider-thumb,
+      #brightness::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #666;
+        margin-top: -8px;
+        cursor: pointer;
+      }
+      #hue::-webkit-slider-runnable-track,
+      #saturation::-webkit-slider-runnable-track,
+      #brightness::-webkit-slider-runnable-track {
+        height: 8px;
+        border-radius: 8px;
+      }
+
+      #hue::-moz-range-track,
+      #saturation::-moz-range-track,
+      #brightness::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(
+          90deg,
+          red 0,
+          #ff0 17%,
+          lime 33%,
+          cyan 50%,
+          blue 66%,
+          #f0f 83%,
+          red
+        );
+      }
+      #saturation::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(90deg, #959595 0, red);
+      }
+      #brightness::-moz-range-track {
+        height: 8px;
+        border-radius: 8px;
+        background-image: linear-gradient(90deg, black 0, white);
+      }
+      #hue::-moz-range-thumb,
+      #saturation::-moz-range-thumb,
+      #brightness::-moz-range-thumb {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #666;
+        cursor: pointer;
+      }
+
+      #hue::-ms-track,
+      #saturation::-ms-track,
+      #brightness::-ms-track {
+        width: 100%;
+        height: 8px;
+        background: transparent;
+        color: transparent;
+      }
+      #hue::-ms-fill-lower,
+      #hue::-ms-fill-upper {
+        background-image: linear-gradient(
+          90deg,
+          red 0,
+          #ff0 17%,
+          lime 33%,
+          cyan 50%,
+          blue 66%,
+          #f0f 83%,
+          red
+        );
+        border-radius: 8px;
+      }
+      #saturation::-ms-fill-lower,
+      #saturation::-ms-fill-upper {
+        background-image: linear-gradient(90deg, #959595 0, red);
+        border-radius: 8px;
+      }
+      #brightness::-ms-fill-lower,
+      #brightness::-ms-fill-upper {
+        background-image: linear-gradient(90deg, black 0, white);
+        border-radius: 8px;
+      }
+
       h1 {
         text-align: center;
         margin-bottom: 30px;
@@ -122,14 +211,14 @@
         font-size: 14px;
       }
 
-      .layer-wrapper {
+      /* .layer-wrapper {
         display: relative;
         position: absolute;
         top: 0;
         left: 0;
         transform: translateX(169px) translateY(196px);
         transform-origin: center;
-      }
+      } */
 
       .image-box img {
         image-rendering: pixelated;
@@ -141,24 +230,27 @@
         position: absolute;
         top: 0;
         left: 0;
+
+        width: 42px;
+        height: 17px;
+
+        background-color: red;
+
+        transform: translateX(169px) translateY(196px);
+        transform-origin: center;
+
+        mask-repeat: no-repeat;
+        mask-position: center;
+        mask-size: 100% 100%;
+
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        -webkit-mask-size: 100% 100%;
+
         image-rendering: pixelated;
-        image-rendering: crisp-edges;
-        -ms-interpolation-mode: nearest-neighbor;
-        z-index: 1;
       }
 
-      .layer-white {
-        opacity: 0;
-        z-index: 2;
-        mix-blend-mode: screen;
-        pointer-events: none;
-      }
-
-      .bg-wrapper {
-        opacity: 0.6;
-      }
-
-      .frame-wrapper {
+      .bg {
         opacity: 0.6;
       }
 
@@ -202,93 +294,78 @@
         margin: 6px 0;
       }
 
-      #hue::-webkit-slider-thumb,
-      #saturation::-webkit-slider-thumb,
-      #brightness::-webkit-slider-thumb {
+      .value-control {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .value-control input {
+        width: 40px;
+        padding: 4px 6px;
+        border-radius: 6px;
+        border: none;
+        background: #444;
+        color: white;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .slider-row input[type="range"] {
+        flex: 1;
+      }
+
+      .adjust-btn {
+        width: 24px;
+        height: 24px;
+
+        font-size: 20px;
+
+        border: none;
+        border-radius: 8px;
+
+        background: #555;
+        color: white;
+
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .adjust-btn:hover {
+        background: #777;
+      }
+
+      .value-input {
+        width: 60px;
+
+        padding: 6px 8px;
+
+        border: none;
+        border-radius: 8px;
+
+        background: #444;
+        color: white;
+
+        text-align: center;
+        font-size: 16px;
+      }
+
+      /* Chrome/Safari */
+      .value-input::-webkit-outer-spin-button,
+      .value-input::-webkit-inner-spin-button {
         -webkit-appearance: none;
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid #666;
-        margin-top: -8px;
-        cursor: pointer;
-      }
-      #hue::-webkit-slider-runnable-track,
-      #saturation::-webkit-slider-runnable-track,
-      #brightness::-webkit-slider-runnable-track {
-        height: 8px;
-        border-radius: 8px;
+        margin: 0;
       }
 
-      #hue::-moz-range-track,
-      #saturation::-moz-range-track,
-      #brightness::-moz-range-track {
-        height: 8px;
-        border-radius: 8px;
-        background-image: linear-gradient(
-          90deg,
-          red 0,
-          #ff0 17%,
-          lime 33%,
-          cyan 50%,
-          blue 66%,
-          #f0f 83%,
-          red
-        );
-      }
-      #saturation::-moz-range-track {
-        height: 8px;
-        border-radius: 8px;
-        background-image: linear-gradient(90deg, #959595 0, red);
-      }
-      #brightness::-moz-range-track {
-        height: 8px;
-        border-radius: 8px;
-        background-image: linear-gradient(90deg, black 0, white);
-      }
-      #hue::-moz-range-thumb,
-      #saturation::-moz-range-thumb,
-      #brightness::-moz-range-thumb {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid #666;
-        cursor: pointer;
-      }
-
-      #hue::-ms-track,
-      #saturation::-ms-track,
-      #brightness::-ms-track {
-        width: 100%;
-        height: 8px;
-        background: transparent;
-        color: transparent;
-      }
-      #hue::-ms-fill-lower,
-      #hue::-ms-fill-upper {
-        background-image: linear-gradient(
-          90deg,
-          red 0,
-          #ff0 17%,
-          lime 33%,
-          cyan 50%,
-          blue 66%,
-          #f0f 83%,
-          red
-        );
-        border-radius: 8px;
-      }
-      #saturation::-ms-fill-lower,
-      #saturation::-ms-fill-upper {
-        background-image: linear-gradient(90deg, #959595 0, red);
-        border-radius: 8px;
-      }
-      #brightness::-ms-fill-lower,
-      #brightness::-ms-fill-upper {
-        background-image: linear-gradient(90deg, black 0, white);
-        border-radius: 8px;
+      /* Firefox */
+      .value-input {
+        -moz-appearance: textfield;
       }
     </style>
   </head>
@@ -298,34 +375,9 @@
     <div class="image-wrapper">
       <div class="image-box">
         <img id="toggleImage" src="./img/char_white.png" />
-        <div class="layer-wrapper bg-wrapper">
-          <div class="blend-layer">
-            <img id="img1" src="./img/bg.png" class="layer" />
-            <img
-              id="img1-white"
-              src="./img/bg_white.png"
-              class="layer layer-white"
-            />
-          </div>
-        </div>
-        <div class="layer-wrapper">
-          <img
-            id="img2-white"
-            src="img/text_white.png"
-            class="layer layer-white"
-          />
-          <img id="img2" src="img/text.png" class="text layer" />
-        </div>
-        <div class="layer-wrapper frame-wrapper">
-          <div class="blend-layer">
-            <img id="img3" src="img/frame.png" class="frame layer" />
-            <img
-              id="img3-white"
-              src="img/frame_white.png"
-              class="layer layer-white"
-            />
-          </div>
-        </div>
+        <div id="img1" class="layer bg" data-mask="./img/bg.png"></div>
+        <div id="img2" class="layer" data-mask="./img/text.png"></div>
+        <div id="img3" class="layer bg" data-mask="./img/frame.png"></div>
       </div>
       <div class="control-box">
         <button id="zoomToggleBtn" class="zoom-btn">2배 확대</button>
@@ -346,31 +398,77 @@
       <div class="control-group">
         <div class="label-row">
           <span>색상</span>
-          <span id="hueValue">0</span>
+
+          <input
+            type="number"
+            id="hueValue"
+            min="0"
+            max="359"
+            value="0"
+            class="value-input"
+          />
         </div>
-        <input type="range" id="hue" min="0" max="359" value="0" />
+
+        <div class="slider-row">
+          <button class="adjust-btn" data-target="hue" data-step="-1">-</button>
+          <input type="range" id="hue" min="0" max="359" value="0" />
+          <button class="adjust-btn" data-target="hue" data-step="1">+</button>
+        </div>
       </div>
       <div class="control-group">
         <div class="label-row">
           <span>채도</span>
-          <span id="saturationValue">0</span>
+
+          <input
+            type="number"
+            id="saturationValue"
+            min="-99"
+            max="99"
+            value="0"
+            class="value-input"
+          />
         </div>
-        <input type="range" id="saturation" min="-99" max="99" value="0" />
+
+        <div class="slider-row">
+          <button class="adjust-btn" data-target="saturation" data-step="-1">
+            -
+          </button>
+          <input type="range" id="saturation" min="-99" max="99" value="0" />
+          <button class="adjust-btn" data-target="saturation" data-step="1">
+            +
+          </button>
+        </div>
       </div>
       <div class="control-group">
         <div class="label-row">
           <span>명도</span>
-          <span id="brightnessValue">0</span>
+
+          <input
+            type="number"
+            id="brightnessValue"
+            min="-99"
+            max="99"
+            value="0"
+            class="value-input"
+          />
         </div>
-        <input type="range" id="brightness" min="-99" max="99" value="0" />
+
+        <div class="slider-row">
+          <button class="adjust-btn" data-target="brightness" data-step="-1">
+            -
+          </button>
+          <input type="range" id="brightness" min="-99" max="99" value="0" />
+          <button class="adjust-btn" data-target="brightness" data-step="1">
+            +
+          </button>
+        </div>
       </div>
     </div>
 
     <script>
-      const images = ["./img/char_white.png", "./img/char.png"];
+      const images = ["./img/char_white.png", "./img/char_other.png"];
       const imagesBtn = ["예시 사진 보기", "흰 배경으로 보기"];
       const imageBoxImage = document.querySelectorAll(".layer");
-      const layerWrappers = document.querySelectorAll(".layer-wrapper");
       const layerButtons = document.querySelectorAll(
         ".top-buttons .select-btn",
       );
@@ -386,49 +484,34 @@
 
       const STORAGE_KEY = "alphasimul_layer_settings_v1";
       const DEFAULT_LAYER_SETTINGS = {
-        img1: { name: "배경", hue: 0, brightness: 0, saturation: 0 },
-        img2: { name: "폰트", hue: 0, brightness: 0, saturation: 0 },
-        img3: { name: "테두리", hue: 0, brightness: 0, saturation: 0 },
+        img1: { name: "배경", hue: 0, brightness: -99, saturation: -99 },
+        img2: { name: "폰트", hue: 0, brightness: 99, saturation: -99 },
+        img3: { name: "테두리", hue: 0, brightness: -99, saturation: -99 },
       };
+
+      document.querySelectorAll(".layer").forEach((layer) => {
+        const maskPath = layer.dataset.mask;
+        layer.style.maskImage = `url(${maskPath})`;
+        layer.style.webkitMaskImage = `url(${maskPath})`;
+      });
+
       /* --------------------------------- */
       function applyLayerStyle(layerId) {
         const settings = layerSettings[layerId];
 
+        const layer = document.getElementById(layerId);
+
+        if (!layer) return;
+
         const h = settings.hue;
-        const s = settings.saturation;
-        const b = settings.brightness;
 
-        const normalLayer = document.getElementById(layerId);
-        const whiteLayer = document.getElementById(`${layerId}-white`);
+        // -99 ~ 99
+        const s = ((settings.saturation + 99) / 198) * 100;
 
-        let brightnessPercent = 100;
-        let whiteOpacity = 0;
+        // -99 ~ 99
+        const l = ((settings.brightness + 99) / 198) * 100;
 
-        if (b <= 0) {
-          brightnessPercent = ((b + 99) / 99) * 100;
-          whiteOpacity = 0;
-        } else {
-          brightnessPercent = 100;
-          whiteOpacity = b / 99;
-        }
-
-        if (normalLayer) {
-          normalLayer.style.filter = `
-      saturate(${100 + s}%)
-      hue-rotate(${h}deg)
-      brightness(${brightnessPercent}%)
-    `;
-        }
-
-        if (whiteLayer) {
-          whiteLayer.style.filter = `
-      saturate(${100 + s}%)
-      hue-rotate(${h}deg)
-      brightness(100%)
-    `;
-
-          whiteLayer.style.opacity = whiteOpacity * 0.8;
-        }
+        layer.style.backgroundColor = `hsl(${h}, ${s}%, ${l}%)`;
       }
       /* --------------------------------- */
 
@@ -452,6 +535,7 @@
           } catch (e) {}
         });
         updateSliderValues(selectedLayerId);
+        saveLayerSettings();
       }
 
       if (resetSettingsBtn) {
@@ -463,6 +547,53 @@
       }
 
       /* --------------------------------- */
+
+      document.querySelectorAll(".adjust-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = button.dataset.target;
+          const step = Number(button.dataset.step);
+
+          const rangeInput = document.getElementById(target);
+          const valueInput = document.getElementById(`${target}Value`);
+
+          let value = Number(rangeInput.value) + step;
+
+          const min = Number(rangeInput.min);
+          const max = Number(rangeInput.max);
+
+          value = Math.max(min, Math.min(max, value));
+
+          rangeInput.value = value;
+          valueInput.value = value;
+
+          syncLayerSetting(target, value);
+        });
+      });
+
+      /* --------------------------------- */
+
+      function bindNumberInput(numberInput, rangeInput, key) {
+        numberInput.addEventListener("input", () => {
+          let value = Number(numberInput.value);
+
+          const min = Number(rangeInput.min);
+          const max = Number(rangeInput.max);
+
+          value = Math.max(min, Math.min(max, value));
+
+          rangeInput.value = value;
+          numberInput.value = value;
+
+          syncLayerSetting(key, value);
+        });
+      }
+
+      bindNumberInput(hueValue, hueInput, "hue");
+      bindNumberInput(saturationValue, saturationInput, "saturation");
+      bindNumberInput(brightnessValue, brightnessInput, "brightness");
+
+      /* --------------------------------- */
+
       const layerSettings = {
         img1: { name: "배경", hue: 0, brightness: 0, saturation: 0 },
         img2: { name: "폰트", hue: 0, brightness: 0, saturation: 0 },
@@ -478,6 +609,7 @@
       function loadLayerSettings() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
+          console.log(STORAGE_KEY);
           if (!raw) return;
           const parsed = JSON.parse(raw);
           Object.keys(layerSettings).forEach((k) => {
@@ -489,7 +621,8 @@
       loadLayerSettings();
 
       let currentIndex = 0;
-      let selectedLayerId = "img1";
+
+      /* --------------------------------- */
 
       otherPictureBtn.addEventListener("click", () => {
         currentIndex = (currentIndex + 1) % images.length;
@@ -505,8 +638,8 @@
       let isZoomed = 0;
       const zoomedOptions = [
         { scale: 1, translateX: 169, translateY: 196 },
-        { scale: 2, translateX: 168, translateY: 209 },
-        { scale: 4, translateX: 167, translateY: 216 },
+        { scale: 2, translateX: 84, translateY: 104 },
+        { scale: 4, translateX: 42, translateY: 54 },
       ];
       const sourceZoomedOptions = [
         { scale: 1, translateX: 0, translateY: 0 },
@@ -521,11 +654,8 @@
              scale(${sourceZoomedOptions[isZoomed].scale})`;
 
         imageBoxImage.forEach((img) => {
-          img.style.transform = `scale(${zoomedOptions[isZoomed].scale})`;
-        });
-
-        layerWrappers.forEach((layer) => {
-          layer.style.transform = `translateX(${zoomedOptions[isZoomed].translateX}px)
+          img.style.transform = `scale(${zoomedOptions[isZoomed].scale})
+            translateX(${zoomedOptions[isZoomed].translateX}px)
             translateY(${zoomedOptions[isZoomed].translateY}px)`;
         });
 
@@ -541,9 +671,9 @@
         hueInput.value = settings.hue;
         brightnessInput.value = settings.brightness;
         saturationInput.value = settings.saturation;
-        hueValue.textContent = `${settings.hue}`;
-        brightnessValue.textContent = `${settings.brightness}`;
-        saturationValue.textContent = `${settings.saturation}`;
+        hueValue.value = settings.hue;
+        brightnessValue.value = settings.brightness;
+        saturationValue.value = settings.saturation;
       }
 
       function setActiveLayerButton(layerId) {
@@ -551,6 +681,8 @@
           button.classList.toggle("active", button.dataset.target === layerId);
         });
       }
+
+      let selectedLayerId = "img1";
 
       layerButtons.forEach((button) => {
         button.addEventListener("click", () => {
@@ -569,19 +701,19 @@
 
       hueInput.addEventListener("input", () => {
         const value = Number(hueInput.value);
-        hueValue.textContent = `${value}`;
+        hueValue.value = value;
         syncLayerSetting("hue", value);
       });
 
       brightnessInput.addEventListener("input", () => {
         const value = Number(brightnessInput.value);
-        brightnessValue.textContent = `${value}`;
+        brightnessValue.value = value;
         syncLayerSetting("brightness", value);
       });
 
       saturationInput.addEventListener("input", () => {
         const value = Number(saturationInput.value);
-        saturationValue.textContent = `${value}`;
+        saturationValue.value = value;
         syncLayerSetting("saturation", value);
       });
 
